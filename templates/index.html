@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}{{ current_category.title() }} News - Digital News Portal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Category Filter -->
+    <div class="col-12 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>
+                <i class="fas fa-{{ 'globe' if current_category == 'general' else 'tag' }} me-2"></i>
+                {{ current_category.title() }} News
+            </h2>
+            <div class="btn-group" role="group">
+                {% for category in categories %}
+                    <a href="{{ url_for('index', category=category) }}" 
+                       class="btn btn-sm btn-{{ 'primary' if category == current_category else 'outline-secondary' }}">
+                        {{ category.title() }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- News Articles -->
+{% if articles %}
+    <div class="row">
+        {% for article in articles %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100">
+                    {% if article.image_url %}
+                        <img src="{{ article.image_url }}" class="card-img-top" alt="{{ article.title }}" 
+                             style="height: 200px; object-fit: cover;" onerror="this.style.display='none'">
+                    {% endif %}
+                    
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">
+                            {% if article.is_custom %}
+                                <a href="{{ article.url }}" class="text-decoration-none">{{ article.title }}</a>
+                            {% else %}
+                                <a href="{{ article.url }}" target="_blank" class="text-decoration-none">{{ article.title }}</a>
+                            {% endif %}
+                        </h5>
+                        
+                        {% if article.description %}
+                            <p class="card-text flex-grow-1">{{ article.description[:150] }}...</p>
+                        {% endif %}
+                        
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-user me-1"></i>{{ article.author }}
+                                </small>
+                                <small class="text-muted">
+                                    <i class="fas fa-clock me-1"></i>{{ article.published_at.strftime('%b %d, %Y') }}
+                                </small>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <span class="badge bg-secondary">
+                                    <i class="fas fa-{{ 'home' if article.is_custom else 'external-link-alt' }} me-1"></i>
+                                    {{ article.source }}
+                                </span>
+                                
+                                {% if article.is_custom %}
+                                    <a href="{{ article.url }}" class="btn btn-sm btn-outline-primary">
+                                        Read More <i class="fas fa-arrow-right ms-1"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="{{ article.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        Read More <i class="fas fa-external-link-alt ms-1"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if page > 1 or articles|length >= 20 %}
+        <div class="row mt-4">
+            <div class="col-12">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        {% if page > 1 %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('index', category=current_category, page=page-1) }}">
+                                    <i class="fas fa-chevron-left"></i> Previous
+                                </a>
+                            </li>
+                        {% endif %}
+                        
+                        <li class="page-item active">
+                            <span class="page-link">{{ page }}</span>
+                        </li>
+                        
+                        {% if articles|length >= 20 %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('index', category=current_category, page=page+1) }}">
+                                    Next <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    {% endif %}
+{% else %}
+    <!-- No Articles Found -->
+    <div class="row">
+        <div class="col-12">
+            <div class="text-center py-5">
+                <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
+                <h3>No articles found</h3>
+                <p class="text-muted">
+                    There are currently no articles available for the {{ current_category }} category.
+                    {% if current_category != 'general' %}
+                        Try checking the <a href="{{ url_for('index', category='general') }}">general news</a> section.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

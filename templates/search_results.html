@@ -3,6 +3,12 @@
 {% block title %}Search Results for "{{ query }}" - Digital News Portal{% endblock %}
 
 {% block content %}
+<!-- NewsAPI Error Message -->
+{% if news_error %}
+<div class="alert alert-danger" role="alert">
+    <i class="fas fa-exclamation-triangle me-2"></i>{{ news_error }}
+</div>
+{% endif %}
 <div class="row">
     <div class="col-12 mb-4">
         <h2>

@@ -3,6 +3,12 @@
 {% block title %}{{ current_category.title() }} News - Digital News Portal{% endblock %}
 
 {% block content %}
+<!-- NewsAPI Error Message -->
+{% if news_error %}
+<div class="alert alert-danger" role="alert">
+    <i class="fas fa-exclamation-triangle me-2"></i>{{ news_error }}
+</div>
+{% endif %}
 <div class="row">
     <!-- Category Filter -->
     <div class="col-12 mb-4">

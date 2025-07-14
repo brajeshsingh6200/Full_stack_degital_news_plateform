@@ -5,6 +5,15 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from sqlalchemy.orm import DeclarativeBase
 from werkzeug.middleware.proxy_fix import ProxyFix
+from dotenv import load_dotenv
+load_dotenv()
+import os
+
+api_key = os.environ.get("NEWS_API_KEY")
+if not api_key or api_key == "default_key":
+    logging.warning(f"NEWS_API_KEY is missing or set to default_key. NewsAPI will not work. Current value: {api_key}")
+else:
+    logging.info(f"NEWS_API_KEY loaded successfully: {api_key[:6]}... (hidden)")
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)

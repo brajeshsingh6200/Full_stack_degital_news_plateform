@@ -17,7 +17,7 @@ def index():
     page = request.args.get('page', 1, type=int)
     
     # Get live news from NewsAPI
-    live_news = news_service.get_top_headlines(category=category if category != 'general' else None, page=page)
+    live_news, news_error = news_service.get_top_headlines(category=category if category != 'general' else None, page=page)
     
     # Get custom articles from database
     custom_articles = Article.query.filter_by(is_custom=True)
@@ -51,7 +51,8 @@ def index():
                          articles=all_articles, 
                          categories=CATEGORIES, 
                          current_category=category,
-                         page=page)
+                         page=page,
+                         news_error=news_error)
 
 @app.route('/article/<int:article_id>')
 def article_detail(article_id):
@@ -70,7 +71,7 @@ def search():
         return redirect(url_for('index'))
     
     # Search live news
-    live_results = news_service.search_news(query, page=page)
+    live_results, news_error = news_service.search_news(query, page=page)
     
     # Search custom articles
     custom_results = Article.query.filter(
@@ -103,7 +104,8 @@ def search():
     return render_template('search_results.html', 
                          articles=all_results, 
                          query=query, 
-                         page=page)
+                         page=page,
+                         news_error=news_error)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

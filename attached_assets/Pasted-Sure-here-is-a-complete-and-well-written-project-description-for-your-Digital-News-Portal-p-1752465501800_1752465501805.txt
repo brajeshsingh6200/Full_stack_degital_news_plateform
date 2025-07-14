@@ -1,0 +1,144 @@
+Sure, here is a **complete and well-written project description** for your **Digital News Portal** project using:
+
+* **Frontend**: HTML, CSS, JavaScript
+* **Backend**: Flask
+* **Database**: MongoDB or SQLite
+* **API**: [NewsAPI.org](https://newsapi.org)
+
+> ✅ You can **copy-paste** this directly into an AI tool, project report, resume, or GitHub README.
+
+---
+
+## 📘 Project Title: **Digital News Portal – Flask-Based News Aggregator**
+
+### 📝 Project Description:
+
+**Digital News Portal** is a full-stack web application built using **HTML, CSS, JavaScript (Frontend)** and **Flask (Backend)** with a **MongoDB/SQLite database**. The application fetches the latest news from multiple categories (e.g., Technology, Sports, Politics, Entertainment) using the **NewsAPI.org** and displays them in a user-friendly interface.
+
+The portal supports both dynamic news fetching via external APIs as well as manual article management via an **admin panel** where the admin can add, update, or delete custom news posts.
+
+---
+
+### 🎯 Key Features:
+
+#### 📰 News Fetching (Live & Dynamic):
+
+* Fetches real-time news articles from NewsAPI.org (using predefined categories like tech, health, sports).
+* API integration using Python `requests` module.
+
+#### 🔎 Search Functionality:
+
+* Users can search news articles using keywords.
+* The search is applied to both live API news and admin-created custom news.
+
+#### 📂 Category Filtering:
+
+* News is grouped and filtered based on categories such as:
+
+  * Technology
+  * Politics
+  * Sports
+  * Health
+  * Business
+
+#### 🛠️ Admin Panel:
+
+* Admin login authentication.
+* Admin can:
+
+  * Create articles
+  * Edit articles
+  * Delete articles
+* Admin-created news is stored in a local MongoDB/SQLite database.
+
+#### 💬 Optional Features:
+
+* Comment section for each article using local DB
+* Text-to-Speech integration (using `pyttsx3` or browser TTS API)
+* Pagination and responsive UI
+
+---
+
+### 🛠️ Tech Stack:
+
+| Layer        | Technology                                       |
+| ------------ | ------------------------------------------------ |
+| **Frontend** | HTML, CSS, JavaScript                            |
+| **Backend**  | Flask (Python)                                   |
+| **Database** | MongoDB (via PyMongo) or SQLite (via SQLAlchemy) |
+| **API**      | NewsAPI.org (for live news data)                 |
+
+---
+
+### 🗂️ Folder Structure (Sample)
+
+```
+news-portal/
+├── app.py
+├── templates/
+│   ├── index.html
+│   ├── article.html
+│   └── admin_dashboard.html
+├── static/
+│   ├── css/
+│   └── js/
+├── models.py
+├── utils.py
+├── requirements.txt
+└── README.md
+```
+
+---
+
+### 🔐 API Key
+
+You can get your free API key by registering at:
+
+👉 [https://newsapi.org/register](https://newsapi.org/register)
+
+Once you register, you’ll receive a free API key via email.
+Then you can use it in your Flask app like this:
+
+```python
+import requests
+
+NEWS_API_KEY = "your_api_key_here"
+url = f"https://newsapi.org/v2/top-headlines?country=in&category=technology&apiKey={NEWS_API_KEY}"
+
+response = requests.get(url)
+data = response.json()
+```
+
+If you don't have an API key, you can:
+
+* Use static sample JSON data to simulate API response (for demo)
+* Or use a dummy key: `"test_api_key"` (but this will not fetch real news)
+
+---
+
+### 🚀 How It Works
+
+1. User lands on homepage → sees live news and custom news
+2. Can filter by category or search
+3. Admin can log in → go to dashboard → create/edit/delete news articles
+4. Optional: Text-to-speech reads news aloud or comments can be added
+
+---
+
+### 🧠 Skills You Will Demonstrate
+
+* Flask routing, Jinja templating
+* HTML/CSS + Bootstrap styling
+* News API integration with Python
+* Database CRUD using MongoDB or SQLite
+* REST API usage and security practices
+
+---
+
+Would you like:
+
+* Flask backend code template?
+* HTML frontend starter template?
+* JSON file to simulate news data for now?
+
+Let me know!

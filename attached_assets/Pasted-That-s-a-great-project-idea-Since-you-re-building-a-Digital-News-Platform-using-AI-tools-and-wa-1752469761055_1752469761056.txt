@@ -1,0 +1,57 @@
+That's a great project idea! Since you're building a **Digital News Platform** using AI tools and want to add functionalities like:
+
+* 🔍 **News Search Bar**
+* 🗂️ **News Category Section**
+  (similar to **Aaj Tak** online)
+
+I'll give you some **AI prompt templates** to use with tools like ChatGPT, GPT-4, or design/image generators like DALL·E, Midjourney, or others.
+
+---
+
+## 🔹 Prompt for Generating UI Design for Search Bar & Category Section
+
+Use this in an AI image tool (like Midjourney, DALL·E) to generate design ideas:
+
+> **Prompt:**
+> "Design a clean and modern user interface for a digital news platform homepage like Aaj Tak. Include a prominent news search bar at the top, category tabs below it (e.g., National, International, Sports, Entertainment, Politics, Business), and a responsive layout with trending news thumbnails. Style should be similar to popular Indian news sites. Use red and white theme colors."
+
+---
+
+## 🔹 Prompt for Generating Dummy News Data with Categories (Use in ChatGPT or GPT API)
+
+> **Prompt:**
+> "Generate JSON data for a digital news platform. Include 5 categories: Politics, Sports, Technology, Entertainment, and Business. For each category, include 3 recent news articles with fields: `title`, `description`, `image_url`, `published_date`, and `source`."
+
+---
+
+## 🔹 Prompt for AI Code Generator (e.g., ChatGPT or GitHub Copilot)
+
+To create a **news search bar + filter by category** in React:
+
+> **Prompt:**
+> "Create a React component for a digital news platform homepage. Include a search bar that filters news articles by keyword, and a category section with buttons (Politics, Sports, Tech, etc.) that filters articles based on selected category. Use Tailwind CSS for styling. Assume articles are fetched from a `newsData` array."
+
+---
+
+## 🔹 Prompt for Article Summarizer (AI Text Tool like ChatGPT or Claude)
+
+> **Prompt:**
+> "Summarize this news article in 50 words or less. Also extract the category it belongs to (e.g., Sports, Business, Politics, etc.). Here's the article: \[paste full article text]"
+
+---
+
+## 🔹 Prompt for SEO-Optimized News Titles (for headline generator)
+
+> **Prompt:**
+> "Generate 5 catchy and SEO-friendly titles for a news article about India's latest budget reforms. Keep it under 60 characters and make it sound engaging for online readers."
+
+---
+
+If you want, I can help you:
+
+* Write the actual **Flask** for search/category 
+* Build a mockup in **HTML/CSS**
+* Generate a **sample dataset** or **dummy API**
+* Or integrate **AI-based summarizer or recommender**
+
+Let me know which you want help with next.

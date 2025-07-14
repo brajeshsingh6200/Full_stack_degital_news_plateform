@@ -30,8 +30,8 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
 # Initialize extensions
 db.init_app(app)
 login_manager.init_app(app)
-login_manager.login_view = 'admin_login'
-login_manager.login_message = 'Please log in to access the admin panel.'
+login_manager.login_view = 'login'
+login_manager.login_message = 'Please log in to access this page.'
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -51,7 +51,9 @@ with app.app_context():
         admin_user = User(
             username='admin',
             email='admin@newsportal.com',
-            password_hash=generate_password_hash('admin123')
+            password_hash=generate_password_hash('admin123'),
+            is_admin=True,
+            is_verified=True
         )
         db.session.add(admin_user)
         db.session.commit()

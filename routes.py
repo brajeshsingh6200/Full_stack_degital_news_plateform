@@ -5,6 +5,7 @@ from app import app, db
 from models import User, Article
 from news_service import news_service
 import logging
+from datetime import datetime
 
 # Categories for news filtering
 CATEGORIES = ['business', 'entertainment', 'general', 'health', 'science', 'sports', 'technology']
@@ -104,9 +105,63 @@ def search():
                          query=query, 
                          page=page)
 
-@app.route('/admin/login', methods=['GET', 'POST'])
-def admin_login():
-    """Admin login page"""
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    """User registration page"""
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    
+    if request.method == 'POST':
+        username = request.form.get('username')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
+        
+        # Validation
+        if not username or not email or not password:
+            flash('All fields are required.', 'danger')
+            return render_template('register.html')
+        
+        if password != confirm_password:
+            flash('Passwords do not match.', 'danger')
+            return render_template('register.html')
+        
+        if len(password) < 6:
+            flash('Password must be at least 6 characters long.', 'danger')
+            return render_template('register.html')
+        
+        # Check if user already exists
+        if User.query.filter_by(username=username).first():
+            flash('Username already exists.', 'danger')
+            return render_template('register.html')
+        
+        if User.query.filter_by(email=email).first():
+            flash('Email already registered.', 'danger')
+            return render_template('register.html')
+        
+        # Create new user
+        user = User(
+            username=username,
+            email=email,
+            password_hash=generate_password_hash(password),
+            is_admin=False,
+            is_verified=True  # Auto-verify for simplicity
+        )
+        
+        db.session.add(user)
+        db.session.commit()
+        
+        flash('Registration successful! Please log in.', 'success')
+        return redirect(url_for('login'))
+    
+    return render_template('register.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    """User login page"""
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
@@ -114,26 +169,50 @@ def admin_login():
         user = User.query.filter_by(username=username).first()
         
         if user and check_password_hash(user.password_hash, password):
+            if not user.is_verified:
+                flash('Account not verified. Please contact admin.', 'warning')
+                return render_template('login.html')
+            
+            # Update last login
+            user.last_login = datetime.utcnow()
+            db.session.commit()
+            
             login_user(user)
             flash('Login successful!', 'success')
-            return redirect(url_for('admin_dashboard'))
+            
+            # Redirect to admin dashboard if admin, otherwise to home
+            if user.is_admin:
+                return redirect(url_for('admin_dashboard'))
+            else:
+                return redirect(url_for('index'))
         else:
             flash('Invalid username or password.', 'danger')
     
-    return render_template('admin_login.html')
+    return render_template('login.html')
 
-@app.route('/admin/logout')
-@login_required
-def admin_logout():
-    """Admin logout"""
+@app.route('/logout')
+def logout():
+    """User logout"""
     logout_user()
     flash('You have been logged out.', 'info')
     return redirect(url_for('index'))
+
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    """Admin login page - redirect to main login"""
+    flash('Please use the main login page.', 'info')
+    return redirect(url_for('login'))
+
+
 
 @app.route('/admin/dashboard')
 @login_required
 def admin_dashboard():
     """Admin dashboard"""
+    if not current_user.is_admin:
+        flash('Access denied. Admin privileges required.', 'danger')
+        return redirect(url_for('index'))
+    
     page = request.args.get('page', 1, type=int)
     articles = Article.query.filter_by(is_custom=True).order_by(Article.created_at.desc()).paginate(
         page=page, per_page=10, error_out=False
@@ -144,6 +223,10 @@ def admin_dashboard():
 @login_required
 def admin_new_article():
     """Create new article"""
+    if not current_user.is_admin:
+        flash('Access denied. Admin privileges required.', 'danger')
+        return redirect(url_for('index'))
+    
     if request.method == 'POST':
         title = request.form.get('title')
         content = request.form.get('content')
@@ -178,6 +261,10 @@ def admin_new_article():
 @login_required
 def admin_edit_article(article_id):
     """Edit existing article"""
+    if not current_user.is_admin:
+        flash('Access denied. Admin privileges required.', 'danger')
+        return redirect(url_for('index'))
+    
     article = Article.query.get_or_404(article_id)
     
     if request.method == 'POST':
@@ -202,6 +289,10 @@ def admin_edit_article(article_id):
 @login_required
 def admin_delete_article(article_id):
     """Delete article"""
+    if not current_user.is_admin:
+        flash('Access denied. Admin privileges required.', 'danger')
+        return redirect(url_for('index'))
+    
     article = Article.query.get_or_404(article_id)
     db.session.delete(article)
     db.session.commit()

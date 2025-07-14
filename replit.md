@@ -8,6 +8,15 @@ This is a Digital News Portal built with Flask that serves as a news aggregation
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes (July 14, 2025)
+
+✓ Added user registration and login system
+✓ Enhanced User model with admin privileges and verification status
+✓ Created separate login/register pages for regular users
+✓ Updated navigation to show user authentication status
+✓ Added admin privilege checks for dashboard and article management
+✓ Integrated PostgreSQL database with proper user authentication
+
 ## System Architecture
 
 ### Frontend Architecture
